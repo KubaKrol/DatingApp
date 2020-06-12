@@ -69,12 +69,24 @@ namespace DatingApp.API.Migrations
                     Url = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true),
                     DateAdded = table.Column<DateTime>(nullable: false),
-                    IsMain = table.Column<bool>(nullable: false)
+                    IsMain = table.Column<bool>(nullable: false),
+                    UserID = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Photos", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Photos_Users_UserID",
+                        column: x => x.UserID,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Photos_UserID",
+                table: "Photos",
+                column: "UserID");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
